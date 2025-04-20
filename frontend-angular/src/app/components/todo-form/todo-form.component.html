@@ -1,0 +1,26 @@
+<div class="todo-form-container">
+  <h2>新規タスク</h2>
+  
+  <form [formGroup]="todoForm" (ngSubmit)="onSubmit()" class="todo-form">
+    <div class="form-group">
+      <input 
+        type="text" 
+        formControlName="task" 
+        placeholder="新しいタスクを入力..."
+        class="task-input"
+        [class.invalid]="taskControl?.invalid && (taskControl?.dirty || taskControl?.touched)"
+      >
+      
+      <div *ngIf="taskControl?.invalid && (taskControl?.dirty || taskControl?.touched)" class="validation-error">
+        <div *ngIf="taskControl?.errors?.['required']">タスクは必須です</div>
+        <div *ngIf="taskControl?.errors?.['minlength']">タスクは2文字以上で入力してください</div>
+      </div>
+    </div>
+    
+    <button type="submit" class="submit-btn" [disabled]="todoForm.invalid || submitting">
+      {{ submitting ? '追加中...' : '追加' }}
+    </button>
+  </form>
+  
+  <div *ngIf="error" class="error">{{ error }}</div>
+</div> 

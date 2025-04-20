@@ -1,0 +1,26 @@
+<div class="todo-list-container">
+  <h2>タスク一覧</h2>
+  
+  <div *ngIf="loading" class="loading">読み込み中...</div>
+  
+  <div *ngIf="error" class="error">{{ error }}</div>
+  
+  <div *ngIf="!loading && todos.length === 0" class="empty-list">
+    タスクがありません。新しいタスクを追加してください。
+  </div>
+  
+  <ul class="todo-list" *ngIf="!loading && todos.length > 0">
+    <li *ngFor="let todo of todos" [class.completed]="todo.completed" class="todo-item">
+      <div class="todo-content">
+        <input type="checkbox" 
+               [checked]="todo.completed" 
+               (change)="toggleComplete(todo)" 
+               class="todo-checkbox">
+        <span class="todo-task">{{ todo.task }}</span>
+      </div>
+      <div class="todo-actions">
+        <button class="delete-btn" (click)="deleteTodo(todo.id!)">削除</button>
+      </div>
+    </li>
+  </ul>
+</div> 
