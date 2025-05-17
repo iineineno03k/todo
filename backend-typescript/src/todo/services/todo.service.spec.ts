@@ -4,6 +4,7 @@ import { TodoRepository } from '../repositories/todo.repository';
 import { Todo } from '../entities/todo.entity';
 import { CreateTodoDto } from '../dtos/create-todo.dto';
 import { UpdateTodoDto } from '../dtos/update-todo.dto';
+import { LoggerService } from '../../common/logger/logger.service';
 
 describe('TodoService', () => {
   let service: TodoService;
@@ -17,6 +18,15 @@ describe('TodoService', () => {
     delete: jest.fn(),
   };
 
+  const mockLoggerService = {
+    setContext: jest.fn().mockReturnThis(),
+    log: jest.fn(),
+    error: jest.fn(),
+    warn: jest.fn(),
+    debug: jest.fn(),
+    verbose: jest.fn(),
+  };
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -24,6 +34,10 @@ describe('TodoService', () => {
         {
           provide: TodoRepository,
           useValue: mockTodoRepository,
+        },
+        {
+          provide: LoggerService,
+          useValue: mockLoggerService,
         },
       ],
     }).compile();

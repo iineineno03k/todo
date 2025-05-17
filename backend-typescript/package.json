@@ -21,14 +21,12 @@
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio",
     "prisma:seed": "ts-node scripts/seed.ts",
-    "generate:types": "ts-node scripts/generate-trpc-types.ts",
     "start:sqlite": "prisma generate && prisma migrate dev --name init && npm run prisma:seed && npm run start:dev"
   },
   "keywords": [
     "nestjs",
     "typescript",
-    "prisma",
-    "trpc"
+    "prisma"
   ],
   "author": "",
   "license": "ISC",
@@ -37,7 +35,6 @@
     "@nestjs/core": "^10.0.0",
     "@nestjs/platform-express": "^10.0.0",
     "@prisma/client": "^5.0.0",
-    "@trpc/server": "^10.38.0",
     "dotenv": "^16.5.0",
     "pino": "^8.15.0",
     "pino-pretty": "^10.2.0",

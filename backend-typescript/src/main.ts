@@ -1,7 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { LoggerService } from './common/logger/logger.service';
-import { TrpcRouter } from './common/trpc/trpc.router';
 
 async function bootstrap() {
   // アプリケーション起動時のロガーを作成
@@ -26,11 +25,6 @@ async function bootstrap() {
       credentials: true,
     });
     appLogger.log('CORS設定を適用しました');
-
-    // tRPCの設定
-    const trpcRouter = await app.resolve(TrpcRouter);
-    trpcRouter.enableTRPC(app);
-    appLogger.log('tRPC設定を適用しました');
 
     // グローバルプレフィックスの設定
     app.setGlobalPrefix('api');

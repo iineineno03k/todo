@@ -6,6 +6,7 @@ import { Todo } from '../entities/todo.entity';
 import { CreateTodoDto } from '../dtos/create-todo.dto';
 import { UpdateTodoDto } from '../dtos/update-todo.dto';
 import * as metadata from '@nestjs/common/decorators/core/controller.decorator';
+import { LoggerService } from '../../common/logger/logger.service';
 
 describe('TodoController', () => {
   let controller: TodoController;
@@ -19,6 +20,15 @@ describe('TodoController', () => {
     delete: jest.fn(),
   };
 
+  const mockLoggerService = {
+    setContext: jest.fn().mockReturnThis(),
+    log: jest.fn(),
+    error: jest.fn(),
+    warn: jest.fn(),
+    debug: jest.fn(),
+    verbose: jest.fn(),
+  };
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [TodoController],
@@ -26,6 +36,10 @@ describe('TodoController', () => {
         {
           provide: TodoService,
           useValue: mockTodoService,
+        },
+        {
+          provide: LoggerService,
+          useValue: mockLoggerService,
         },
       ],
     }).compile();

@@ -7,10 +7,8 @@ src/
 ├── app.module.ts           # アプリケーションのルートモジュール
 ├── main.ts                 # アプリケーションのエントリーポイント
 ├── common/                 # 共通機能
-│   ├── logger/             # ロギング機能
-│   │   └── logger.service.ts
-│   └── trpc/               # tRPC設定
-│       └── trpc.router.ts
+│   └── logger/             # ロギング機能
+│       └── logger.service.ts
 └── todo/                   # Todoモジュール
     ├── todo.module.ts      # Todoモジュール定義
     ├── controllers/        # コントローラー層
@@ -51,10 +49,6 @@ src/
 ### REST API
 
 標準的なRESTful APIを提供し、Todoリソースに対するCRUD操作をサポートします。
-
-### tRPC
-
-型安全なRPCを提供し、フロントエンドとバックエンド間の強力な型チェックを可能にします。
 
 ### バリデーション
 
