@@ -47,21 +47,19 @@ describe('TodoController (e2e)', () => {
     await prisma.todo.deleteMany({});
   });
 
-  // 最初にルーティングが正しく設定されているか確認するテスト
-  it('API routing should be correctly configured', async () => {
-    // グローバルプレフィックス + コントローラールートのパス
+  it('APIのルーティングが正しく設定されていること', async () => {
     const response = await request(app.getHttpServer()).get('/api/todos');
-    expect(response.status).not.toBe(404); // 404でないことを確認
+    expect(response.status).not.toBe(404);
   });
 
-  it('GET /api/todos - should return an empty array initially', () => {
+  it('GET /api/todos - 初期状態で空の配列が返されること', () => {
     return request(app.getHttpServer())
       .get('/api/todos')
       .expect(HttpStatus.OK)
       .expect([]);
   });
 
-  it('POST /api/todos - should create a new todo', () => {
+  it('POST /api/todos - 新しいタスクを作成できること', () => {
     return request(app.getHttpServer())
       .post('/api/todos')
       .send({ task: 'E2E Test Task' })
@@ -74,7 +72,7 @@ describe('TodoController (e2e)', () => {
       });
   });
 
-  it('GET /api/todos - should return an array with the created todo', async () => {
+  it('GET /api/todos - 作成したタスクが取得できること', async () => {
     // まずタスクを作成
     const createResponse = await request(app.getHttpServer())
       .post('/api/todos')
@@ -92,7 +90,7 @@ describe('TodoController (e2e)', () => {
       });
   });
 
-  it('GET /api/todos/:id - should return a todo by id', async () => {
+  it('GET /api/todos/:id - 指定したIDのタスクを取得できること', async () => {
     // まずタスクを作成
     const createResponse = await request(app.getHttpServer())
       .post('/api/todos')
@@ -108,7 +106,7 @@ describe('TodoController (e2e)', () => {
       });
   });
 
-  it('PUT /api/todos/:id - should update a todo', async () => {
+  it('PUT /api/todos/:id - タスクを更新できること', async () => {
     // まずタスクを作成
     const createResponse = await request(app.getHttpServer())
       .post('/api/todos')
@@ -126,7 +124,24 @@ describe('TodoController (e2e)', () => {
       });
   });
 
-  it('DELETE /api/todos/:id - should delete a todo', async () => {
+  it('PUT /api/todos/:id - タスクが空文字列の場合にバリデーションエラーが返されること', async () => {
+    // まずタスクを作成
+    const createResponse = await request(app.getHttpServer())
+      .post('/api/todos')
+      .send({ task: 'E2E Test Task' });
+    todoId = createResponse.body.id;
+
+    return request(app.getHttpServer())
+      .put(`/api/todos/${todoId}`)
+      .send({ task: '' })
+      .expect(HttpStatus.BAD_REQUEST)
+      .expect((res: any) => {
+        expect(res.body).toHaveProperty('message', 'Validation failed');
+        expect(res.body).toHaveProperty('errors');
+      });
+  });
+
+  it('DELETE /api/todos/:id - タスクを削除できること', async () => {
     // まずタスクを作成
     const createResponse = await request(app.getHttpServer())
       .post('/api/todos')
@@ -139,7 +154,7 @@ describe('TodoController (e2e)', () => {
       .expect({ success: true });
   });
 
-  it('GET /api/todos - should return an empty array after deletion', async () => {
+  it('GET /api/todos - タスク削除後に空の配列が返されること', async () => {
     // まずタスクを作成
     const createResponse = await request(app.getHttpServer())
       .post('/api/todos')
@@ -158,20 +173,20 @@ describe('TodoController (e2e)', () => {
       .expect([]);
   });
 
-  it('GET /api/todos/:id - should return 404 if todo not found', () => {
+  it('GET /api/todos/:id - 存在しないIDの場合に404エラーが返されること', () => {
     return request(app.getHttpServer())
       .get(`/api/todos/999`)
       .expect(HttpStatus.NOT_FOUND);
   });
 
-  it('PUT /api/todos/:id - should return 404 if todo not found', () => {
+  it('PUT /api/todos/:id - 存在しないIDの場合に404エラーが返されること', () => {
     return request(app.getHttpServer())
       .put(`/api/todos/999`)
       .send({ task: 'This should fail', completed: true })
       .expect(HttpStatus.NOT_FOUND);
   });
 
-  it('DELETE /api/todos/:id - should return 404 if todo not found', () => {
+  it('DELETE /api/todos/:id - 存在しないIDの場合に404エラーが返されること', () => {
     return request(app.getHttpServer())
       .delete(`/api/todos/999`)
       .expect(HttpStatus.NOT_FOUND);

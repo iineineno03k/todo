@@ -50,12 +50,12 @@ describe('TodoService', () => {
     jest.clearAllMocks();
   });
 
-  it('should be defined', () => {
+  it('サービスが正しく初期化されること', () => {
     expect(service).toBeDefined();
   });
 
   describe('findAll', () => {
-    it('should return an array of todos', async () => {
+    it('全てのタスクを取得できること', async () => {
       const result: Todo[] = [
         new Todo({ id: 1, task: 'Test task', completed: false, createdAt: new Date() }),
       ];
@@ -67,7 +67,7 @@ describe('TodoService', () => {
   });
 
   describe('findById', () => {
-    it('should return a todo by id', async () => {
+    it('指定したIDのタスクを取得できること', async () => {
       const result = new Todo({ id: 1, task: 'Test task', completed: false, createdAt: new Date() });
       mockTodoRepository.findById.mockResolvedValue(result);
 
@@ -75,7 +75,7 @@ describe('TodoService', () => {
       expect(mockTodoRepository.findById).toHaveBeenCalledWith(1);
     });
 
-    it('should return null if todo not found', async () => {
+    it('存在しないIDを指定した場合にnullが返されること', async () => {
       mockTodoRepository.findById.mockResolvedValue(null);
 
       expect(await service.findById(999)).toBeNull();
@@ -84,7 +84,7 @@ describe('TodoService', () => {
   });
 
   describe('create', () => {
-    it('should create a new todo', async () => {
+    it('新しいタスクを作成できること', async () => {
       const createTodoDto: CreateTodoDto = { task: 'New task' };
       const result = new Todo({ id: 1, ...createTodoDto, completed: false, createdAt: new Date() });
       mockTodoRepository.create.mockResolvedValue(result);
@@ -95,7 +95,7 @@ describe('TodoService', () => {
   });
 
   describe('update', () => {
-    it('should update a todo', async () => {
+    it('既存のタスクを更新できること', async () => {
       const updateTodoDto: UpdateTodoDto = { task: 'Updated task', completed: true };
       const result = new Todo({
         id: 1,
@@ -109,7 +109,7 @@ describe('TodoService', () => {
       expect(mockTodoRepository.update).toHaveBeenCalledWith(1, updateTodoDto);
     });
 
-    it('should return null if todo not found', async () => {
+    it('存在しないIDのタスクを更新しようとした場合にnullが返されること', async () => {
       const updateTodoDto: UpdateTodoDto = { task: 'Updated task' };
       mockTodoRepository.update.mockResolvedValue(null);
 
@@ -119,14 +119,14 @@ describe('TodoService', () => {
   });
 
   describe('delete', () => {
-    it('should delete a todo and return true', async () => {
+    it('タスクを削除できること', async () => {
       mockTodoRepository.delete.mockResolvedValue(true);
 
       expect(await service.delete(1)).toBe(true);
       expect(mockTodoRepository.delete).toHaveBeenCalledWith(1);
     });
 
-    it('should return false if todo not found', async () => {
+    it('存在しないIDのタスクを削除しようとした場合にfalseが返されること', async () => {
       mockTodoRepository.delete.mockResolvedValue(false);
 
       expect(await service.delete(999)).toBe(false);

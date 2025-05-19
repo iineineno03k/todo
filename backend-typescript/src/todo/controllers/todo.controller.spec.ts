@@ -5,7 +5,6 @@ import { TodoService } from '../services/todo.service';
 import { Todo } from '../entities/todo.entity';
 import { CreateTodoDto } from '../dtos/create-todo.dto';
 import { UpdateTodoDto } from '../dtos/update-todo.dto';
-import * as metadata from '@nestjs/common/decorators/core/controller.decorator';
 import { LoggerService } from '../../common/logger/logger.service';
 
 describe('TodoController', () => {
@@ -52,23 +51,21 @@ describe('TodoController', () => {
     jest.clearAllMocks();
   });
 
-  it('should be defined', () => {
+  it('コントローラーが正しく初期化されること', () => {
     expect(controller).toBeDefined();
   });
 
-  // コントローラーの正しいパス設定をテスト
-  it('should have correct route path (todos, not api/todos)', () => {
-    // コントローラーのメタデータを取得して検証
+  it('コントローラーのルートパスが正しく設定されていること', () => {
     const controllerMetadata = Reflect.getMetadata(
       'path',
       TodoController,
     );
-    expect(controllerMetadata).toBe('todos'); // 正しくtodosに設定されているか検証
-    expect(controllerMetadata).not.toBe('api/todos'); // api/todosになっていないこと
+    expect(controllerMetadata).toBe('todos');
+    expect(controllerMetadata).not.toBe('api/todos');
   });
 
   describe('findAll', () => {
-    it('should return an array of todos', async () => {
+    it('全てのタスクを取得できること', async () => {
       const result: Todo[] = [
         new Todo({ id: 1, task: 'Test task', completed: false, createdAt: new Date() }),
       ];
@@ -80,7 +77,7 @@ describe('TodoController', () => {
   });
 
   describe('findById', () => {
-    it('should return a todo by id', async () => {
+    it('指定したIDのタスクを取得できること', async () => {
       const result = new Todo({ id: 1, task: 'Test task', completed: false, createdAt: new Date() });
       mockTodoService.findById.mockResolvedValue(result);
 
@@ -88,7 +85,7 @@ describe('TodoController', () => {
       expect(mockTodoService.findById).toHaveBeenCalledWith(1);
     });
 
-    it('should throw an exception if todo not found', async () => {
+    it('存在しないIDを指定した場合に404エラーが返されること', async () => {
       mockTodoService.findById.mockResolvedValue(null);
 
       try {
@@ -101,7 +98,7 @@ describe('TodoController', () => {
   });
 
   describe('create', () => {
-    it('should create a new todo', async () => {
+    it('新しいタスクを作成できること', async () => {
       const createTodoDto: CreateTodoDto = { task: 'New task' };
       const result = new Todo({ id: 1, ...createTodoDto, completed: false, createdAt: new Date() });
       mockTodoService.create.mockResolvedValue(result);
@@ -112,7 +109,7 @@ describe('TodoController', () => {
   });
 
   describe('update', () => {
-    it('should update a todo', async () => {
+    it('既存のタスクを更新できること', async () => {
       const updateTodoDto: UpdateTodoDto = { task: 'Updated task', completed: true };
       const result = new Todo({
         id: 1,
@@ -126,7 +123,7 @@ describe('TodoController', () => {
       expect(mockTodoService.update).toHaveBeenCalledWith(1, updateTodoDto);
     });
 
-    it('should throw an exception if todo not found', async () => {
+    it('存在しないIDのタスクを更新しようとした場合に404エラーが返されること', async () => {
       const updateTodoDto: UpdateTodoDto = { task: 'Updated task' };
       mockTodoService.update.mockResolvedValue(null);
 
@@ -140,14 +137,14 @@ describe('TodoController', () => {
   });
 
   describe('delete', () => {
-    it('should delete a todo', async () => {
+    it('タスクを削除できること', async () => {
       mockTodoService.delete.mockResolvedValue(true);
 
       expect(await controller.delete('1')).toEqual({ success: true });
       expect(mockTodoService.delete).toHaveBeenCalledWith(1);
     });
 
-    it('should throw an exception if todo not found', async () => {
+    it('存在しないIDのタスクを削除しようとした場合に404エラーが返されること', async () => {
       mockTodoService.delete.mockResolvedValue(false);
 
       try {
