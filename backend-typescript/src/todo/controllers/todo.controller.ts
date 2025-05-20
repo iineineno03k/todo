@@ -30,6 +30,7 @@ export class TodoController {
       this.logger.warn(`Todo with id ${id} not found`);
       throw new HttpException('Todo not found', HttpStatus.NOT_FOUND);
     }
+    
     return todo;
   }
 
