@@ -53,7 +53,6 @@ export class TodoController {
   async update(@Param('id') id: string, @Body() updateTodoDto: UpdateTodoDto): Promise<Todo> {
     try {
       this.logger.debug(`Updating todo ${id}: ${JSON.stringify(updateTodoDto)}`);
-      // Zodによるバリデーション
       updateTodoSchema.parse(updateTodoDto);
 
       const todo = await this.todoService.update(Number(id), updateTodoDto);
