@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 const todos = [
   { task: 'プロジェクトのセットアップ', completed: true },
   { task: 'APIエンドポイントの実装', completed: true },
-  { task: 'フロントエンドの接続', completed: false },
+  { task: 'フロントエンドの接続', completed: true },
   { task: 'ユニットテストの作成', completed: false },
   { task: 'ドキュメントの作成', completed: false },
 ];
