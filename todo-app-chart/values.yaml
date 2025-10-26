@@ -1,0 +1,127 @@
+# Default values for todo-app-chart.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# Global replica count (can be overridden per component)
+replicaCount: 1
+
+# Backend service configuration
+backend:
+  image:
+    repository: todo-backend
+    tag: latest
+    pullPolicy: Never  # Use 'Never' for minikube, 'IfNotPresent' for production
+  service:
+    type: ClusterIP
+    port: 8080
+  env:
+    - name: SPRING_DATASOURCE_URL
+      value: jdbc:postgresql://postgres-service:5432/tododb
+    - name: SPRING_DATASOURCE_USERNAME
+      value: todouser
+    - name: SPRING_DATASOURCE_PASSWORD
+      value: todopass
+  resources: {}
+    # limits:
+    #   cpu: 500m
+    #   memory: 512Mi
+    # requests:
+    #   cpu: 250m
+    #   memory: 256Mi
+
+# Frontend service configuration
+frontend:
+  image:
+    repository: todo-frontend
+    tag: latest
+    pullPolicy: Never  # Use 'Never' for minikube, 'IfNotPresent' for production
+  service:
+    type: NodePort
+    port: 3000
+    nodePort: 30080
+  env:
+    - name: NEXT_PUBLIC_API_URL
+      value: http://localhost:8080/api
+  resources: {}
+    # limits:
+    #   cpu: 200m
+    #   memory: 256Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+
+# PostgreSQL database configuration
+postgres:
+  enabled: true
+  image:
+    repository: postgres
+    tag: 15-alpine
+    pullPolicy: IfNotPresent
+  auth:
+    database: tododb
+    username: todouser
+    password: todopass  # In production, use Kubernetes Secrets
+  service:
+    type: ClusterIP
+    port: 5432
+  persistence:
+    enabled: false  # Set to true for production with PersistentVolume
+  resources: {}
+    # limits:
+    #   cpu: 500m
+    #   memory: 512Mi
+    # requests:
+    #   cpu: 250m
+    #   memory: 256Mi
+
+# Ingress configuration
+ingress:
+  enabled: true
+  className: nginx
+  annotations: {}
+  # For rewrite rules, add:
+  # annotations:
+  #   nginx.ingress.kubernetes.io/rewrite-target: /$2
+  # host: localhost  # Uncomment and set for production (e.g., example.com)
+  paths:
+    backend:
+      path: /api
+      pathType: Prefix
+    frontend:
+      path: /
+      pathType: Prefix
+  tls: []
+  # For production with TLS:
+  # tls:
+  #   - secretName: todo-app-tls
+  #     hosts:
+  #       - example.com
+
+# Additional settings
+nameOverride: ""
+fullnameOverride: ""
+
+# Service account (not used in current implementation)
+serviceAccount:
+  create: false
+  automount: false
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
