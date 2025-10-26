@@ -86,6 +86,13 @@ Minikubeを使ったKubernetes学習の記録
 - CORS設定の調整
 - Zodバリデーションのトラブルシューティング
 
+### 8. [Helmの導入](./08-helm-introduction.md) ⭐ 推奨
+- なぜHelmが必要になるのか（複数環境での課題）
+- Helmの基本概念（Chart、Values、Template、Release）
+- 現在のYAMLをHelmチャート化する手順
+- 環境別のvalues.yamlの使い分け
+- 実務での拡張性を持たせる方法
+
 ## 現在のシステム構成
 
 ```
@@ -137,7 +144,8 @@ sample/
     ├── 04-service-and-database.md
     ├── 05-service-types-deep-dive.md
     ├── 06-frontend-deployment.md
-    └── 07-ingress-and-troubleshooting.md
+    ├── 07-ingress-and-troubleshooting.md
+    └── 08-helm-introduction.md
 ```
 
 ## クイックスタート
@@ -190,8 +198,13 @@ kubectl port-forward -n ingress-nginx service/ingress-nginx-controller 8080:80
 
 ## 次のステップ
 
+### 実務的な拡張
+- [ ] **Helmチャート化**（複数環境に対応） → [08-helm-introduction.md](./08-helm-introduction.md)
 - [ ] ConfigMapによる設定管理
 - [ ] Secretによる機密情報管理
 - [ ] PersistentVolumeによる永続化
+
+### 運用・監視
 - [ ] ヘルスチェックとリソース制限
 - [ ] スケーリングとローリングアップデート
+- [ ] ログ収集と監視
