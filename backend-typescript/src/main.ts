@@ -20,7 +20,10 @@ async function bootstrap() {
 
     // CORSの設定
     app.enableCors({
-      origin: 'http://localhost:4200', // Angularフロントエンド用
+      origin: [
+        'http://localhost:4200', // Angularフロントエンド用
+        'http://localhost:3000', // Next.jsフロントエンド用
+      ],
       methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
       credentials: true,
     });
