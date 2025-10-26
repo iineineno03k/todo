@@ -20,7 +20,10 @@ export function TodoItem({ todo, mutate }: TodoItemProps) {
   const handleToggle = () => {
     startTransition(async () => {
       try {
-        await todoApi.toggle(todo.id, !todo.completed);
+        await todoApi.update(todo.id, {
+          task: todo.task,
+          completed: !todo.completed
+        });
         mutate();
       } catch (error) {
         console.error('Failed to toggle todo:', error);
@@ -43,7 +46,10 @@ export function TodoItem({ todo, mutate }: TodoItemProps) {
     if (isEditing && editedTask.trim() && editedTask !== todo.task) {
       startTransition(async () => {
         try {
-          await todoApi.update(todo.id, { task: editedTask.trim() });
+          await todoApi.update(todo.id, {
+            task: editedTask.trim(),
+            completed: todo.completed
+          });
           mutate();
           setIsEditing(false);
         } catch (error) {

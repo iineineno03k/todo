@@ -5,7 +5,10 @@ import {
   UpdateTodoDto,
 } from '@/types/todo';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/api';
+// Use relative path for Ingress routing
+// In Kubernetes: /api routes to backend-service via Ingress
+// In local dev: use NEXT_PUBLIC_API_URL or default to localhost
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || '/api';
 
 class ApiError extends Error {
   constructor(public status: number, message: string) {

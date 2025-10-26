@@ -5,7 +5,7 @@ export const todoSchema = z.object({
   id: z.number(),
   task: z.string().min(1),
   completed: z.boolean(),
-  createdAt: z.string().datetime(),
+  createdAt: z.string(),
 });
 
 export const createTodoSchema = z.object({
