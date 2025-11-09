@@ -51,7 +51,7 @@ dependencies {
 openApiGenerate {
     generatorName.set("kotlin-spring")
     inputSpec.set("$projectDir/openapi/openapi.yaml")
-    outputDir.set(layout.buildDirectory.dir("generated").get().asFile.path)
+    outputDir.set("$projectDir/src/generated")
     apiPackage.set("com.example.todo.api")
     modelPackage.set("com.example.todo.api.model")
     configOptions.set(
@@ -67,7 +67,7 @@ openApiGenerate {
 }
 
 // Add generated sources to source sets
-kotlin.sourceSets["main"].kotlin.srcDir(layout.buildDirectory.dir("generated/src/main/kotlin"))
+kotlin.sourceSets["main"].kotlin.srcDir("src/generated/src/main/kotlin")
 
 // Ensure OpenAPI generation runs before compilation
 tasks.withType<KotlinCompile> {

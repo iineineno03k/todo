@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.RestController
+import java.time.ZoneOffset
 
 @RestController
 @CrossOrigin(origins = ["http://localhost:4200", "http://localhost:3000", "http://localhost:8080"])
@@ -59,7 +60,7 @@ class TodoController(
             id = this.id!!,
             task = this.task,
             completed = this.completed,
-            createdAt = this.createdAt
+            createdAt = this.createdAt.atOffset(ZoneOffset.UTC)
         )
     }
 }

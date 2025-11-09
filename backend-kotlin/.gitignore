@@ -25,3 +25,6 @@ Thumbs.db
 
 # Kotlin
 *.kotlin_module
+
+# Generated sources
+src/generated/
