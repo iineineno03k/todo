@@ -142,7 +142,20 @@ isort src/
 
 ### テスト
 
+テストの実行:
 ```bash
-pip install pytest pytest-cov
 pytest
 ```
+
+カバレッジレポート付きでテストを実行:
+```bash
+pytest --cov=src --cov-report=term-missing --cov-report=html
+```
+
+テスト構成:
+- `tests/test_repositories.py`: リポジトリ層のユニットテスト
+- `tests/test_services.py`: サービス層のユニットテスト
+- `tests/test_api.py`: APIエンドポイントの統合テスト
+- `tests/conftest.py`: pytest フィクスチャ（テスト用DB設定など）
+
+全てのテストはインメモリSQLiteデータベースを使用するため、PostgreSQLサーバーは不要です。
